@@ -41,10 +41,33 @@ function PageContent() {
         component: 'textarea',
       },
     ],
-    initialValues: pageData,
+    loadInitialValues() {
+      return fetch(
+        'https://jsonplaceholder.typicode.com/posts/1'
+      ).then((response) => response.json());
+    },
     onSubmit: async () => {
       window.alert('Saved!')
     },
+
+    onSubmit(formData) {
+      return fetch('https://jsonplaceholder.typicode.com/posts/1', {
+        method: 'PUT',
+        body: JSON.stringify({
+          id: 1,
+          title: formData.title,
+          body: formData.body,
+          userId: 1,
+        }),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        }
+      })
+        .then(response => response.json())
+        .then(data => console.log('data', data))
+        .catch(e => console.error(e))
+    }
+
   }
 
 
