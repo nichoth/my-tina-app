@@ -25,6 +25,8 @@ const pageData = {
 };
 
 function PageContent() {
+  const cms = useCMS();
+
   // 2. Define the form configuration object
   const formConfig = {
     id: 'tina-tutorial-index',
@@ -46,11 +48,10 @@ function PageContent() {
         'https://jsonplaceholder.typicode.com/posts/1'
       ).then((response) => response.json());
     },
-    onSubmit: async () => {
-      window.alert('Saved!')
-    },
 
     onSubmit(formData) {
+      cms.alerts.info('Saving Content...')
+
       return fetch('https://jsonplaceholder.typicode.com/posts/1', {
         method: 'PUT',
         body: JSON.stringify({
@@ -65,7 +66,14 @@ function PageContent() {
       })
         .then(response => response.json())
         .then(data => console.log('data', data))
-        .catch(e => console.error(e))
+        .then((data) => {
+          cms.alerts.success('Saved Content!');
+          console.log(data);
+        })
+        .catch(err => {
+          cms.alerts.error('Error Saving Content');
+          console.error(err)
+        })
     }
 
   }
