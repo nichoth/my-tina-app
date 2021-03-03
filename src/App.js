@@ -1,12 +1,19 @@
 import React from 'react';
+import { TinaProvider, TinaCMS, useCMS } from 'tinacms';
 import logo from './Icon.svg';
 import './App.css';
 
 function App() {
+  const cms = new TinaCMS({
+    sidebar: true,
+  });
+
   return (
-    <div className="App">
-      <PageContent />
-    </div>
+    <TinaProvider cms={cms}>
+      <div className="App">
+        <PageContent />
+      </div>
+    </TinaProvider>
   );
 }
 
@@ -29,9 +36,10 @@ function PageContent() {
 }
 
 function EditButton() {
+  const cms = useCMS();
   return (
-    <button onClick={() => window.alert("Tina isn't configured yet!")}>
-      Edit This Site
+    <button onClick={() => cms.toggle()}>
+      {cms.enabled ? 'Exit Edit Mode' : 'Edit This Site'}
     </button>
   );
 }
